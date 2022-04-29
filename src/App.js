@@ -2,19 +2,31 @@ import { useEffect } from "react";
 
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 
+import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
 // Material Dashboard 2 React example components
 import Sidenav from "examples/Sidenav";
 
+// Material Dashboard 2 React themes
+import theme from "assets/theme";
+
+// Material Dashboard 2 React Dark Mode themes
+import themeDark from "assets/theme-dark";
+
+// Material Dashboard 2 React routes
 import routes from "routes";
 
 // Material Dashboard 2 React contexts
 import { useMaterialUIController } from "context";
 
+// Images
+import brandWhite from "assets/images/logo-ct.png";
+import brandDark from "assets/images/logo-ct-dark.png";
+
 export default function App() {
   const [controller] = useMaterialUIController();
-  const { direction, sidenavColor } = controller;
+  const { direction, sidenavColor, transparentSidenav, whiteSidenav, darkMode } = controller;
   const { pathname } = useLocation();
 
   // Setting the dir attribute for the body element
@@ -42,13 +54,18 @@ export default function App() {
     });
 
   return (
-    <>
+    <ThemeProvider theme={darkMode ? themeDark : theme}>
       <CssBaseline />
-      <Sidenav color={sidenavColor} brandName="HJW" routes={routes} />
+      <Sidenav
+        color={sidenavColor}
+        brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
+        brandName="HJW"
+        routes={routes}
+      />
       <Routes>
         {getRoutes(routes)}
         <Route path="*" element={<Navigate to="/dashboard" />} />
       </Routes>
-    </>
+    </ThemeProvider>
   );
 }
