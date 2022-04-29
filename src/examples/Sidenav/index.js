@@ -8,16 +8,13 @@ import PropTypes from "prop-types";
 
 // @mui material components
 import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
 import Link from "@mui/material/Link";
-import Icon from "@mui/material/Icon";
 
 // Material Dashboard 2 React example components
 import SidenavCollapse from "examples/Sidenav/SidenavCollapse";
 
 // Custom styles for the Sidenav
 import SidenavRoot from "examples/Sidenav/SidenavRoot";
-import sidenavLogoLabel from "examples/Sidenav/styles/sidenav";
 
 // Material Dashboard 2 React context
 import {
@@ -26,23 +23,12 @@ import {
   setTransparentSidenav,
   setWhiteSidenav,
 } from "context";
-import { Box, Typography } from "@mui/material";
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav, transparentSidenav, whiteSidenav, darkMode } = controller;
   const location = useLocation();
   const collapseName = location.pathname.replace("/", "");
-
-  let textColor = "white";
-
-  if (transparentSidenav || (whiteSidenav && !darkMode)) {
-    textColor = "dark";
-  } else if (whiteSidenav && darkMode) {
-    textColor = "inherit";
-  }
-
-  const closeSidenav = () => setMiniSidenav(dispatch, true);
 
   useEffect(() => {
     // A function that sets the mini state of the sidenav.
@@ -93,38 +79,6 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       variant="permanent"
       ownerState={{ transparentSidenav, whiteSidenav, miniSidenav, darkMode }}
     >
-      <Box pt={3} pb={1} px={4} textAlign="center">
-        <Box
-          display={{ xs: "block", xl: "none" }}
-          position="absolute"
-          top={0}
-          right={0}
-          p={1.625}
-          onClick={closeSidenav}
-          sx={{ cursor: "pointer" }}
-        >
-          <Typography variant="h6" color="secondary">
-            <Icon sx={{ fontWeight: "bold" }}>close</Icon>
-          </Typography>
-        </Box>
-        <Box component={NavLink} to="/" display="flex" alignItems="center">
-          {brand && <Box component="img" src={brand} alt="Brand" width="2rem" />}
-          <Box
-            width={!brandName && "100%"}
-            sx={(theme) => sidenavLogoLabel(theme, { miniSidenav })}
-          >
-            <Typography component="h6" variant="button" fontWeight="medium" color={textColor}>
-              {brandName}
-            </Typography>
-          </Box>
-        </Box>
-      </Box>
-      <Divider
-        light={
-          (!darkMode && !whiteSidenav && !transparentSidenav) ||
-          (darkMode && !transparentSidenav && whiteSidenav)
-        }
-      />
       <List>{renderRoutes}</List>
     </SidenavRoot>
   );
