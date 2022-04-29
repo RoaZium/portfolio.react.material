@@ -8,7 +8,6 @@ import PropTypes from "prop-types";
 
 // @mui material components
 import List from "@mui/material/List";
-import Link from "@mui/material/Link";
 
 // Material Dashboard 2 React example components
 import SidenavCollapse from "examples/Sidenav/SidenavCollapse";
@@ -51,19 +50,11 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   }, [dispatch, location]);
 
   // Render all the routes from the routes.js (All the visible items on the Sidenav)
-  const renderRoutes = routes.map(({ type, name, icon, key, href, route }) => {
+  const renderRoutes = routes.map(({ type, name, icon, key, route }) => {
     let returnValue;
 
     if (type === "collapse") {
-      returnValue = href ? (
-        <Link
-          href={href}
-          key={key}
-          target="_blank"
-          rel="noreferrer"
-          sx={{ textDecoration: "none" }}
-        />
-      ) : (
+      returnValue = (
         <NavLink key={key} to={route}>
           <SidenavCollapse name={name} icon={icon} active={key === collapseName} />
         </NavLink>
